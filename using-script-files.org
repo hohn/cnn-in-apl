@@ -1,4 +1,49 @@
 * Using Script Files
+** misc
+    - ]load 
+      #+BEGIN_SRC dyalog
+        ]load filename
+        ⎕SE.SALT.Load 'filename'      
+      #+END_SRC
+      
+    - ]save
+
+    - Version 15.0 added support to the interpreter:
+      #+BEGIN_SRC dyalog
+        2 ⎕FIX 'file://filename.dyalog'
+        )ed file://filename.dyalog
+      #+END_SRC
+
+    - Once your application is working as you want, enter set the ⎕LX (Latent
+      eXpression) variable to a statement that starts your application and then
+      closes APL when done, e.g.
+      :     ⎕LX←'myApp.Run ⋄ ⎕OFF'.
+
+      Next, save your application as a workspace with
+      :     )save /tmp/myapp.
+
+      You should now be able to run your application with
+      :     dyalog -hello=world /tmp/myapp
+      etc. You can of course put this in a shell script for ease of
+      use.
+
+    
+
+** Data import / export
+   https://help.dyalog.com/latest/index.htm#Language/System%20Functions/csv.htm?Highlight=csv   
+   - Monadic ⎕CSV imports data from a CSV file or converts data from CSV format to
+     an internal format.
+
+   - Dyadic ⎕CSV exports data to a CSV file or converts data from internal format
+     to a CSV format.
+
+** The script
+   #+BEGIN_SRC text
+     :Namespace Simple
+
+     Nested←'My name is Bond' 0 0 7
+   #+END_SRC
+
 ** Loading a Script into the Session
 
 To demonstrate how SALT can use this Script, let us work in a clear workspace.

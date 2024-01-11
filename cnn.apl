@@ -12,6 +12,10 @@
 ⍝ OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 ⍝ PERFORMANCE OF THIS SOFTWARE.
 
+ ⍝ To connect from emacs:
+ ⍝ docker run -e RIDE_INIT=serve:*:4502 -p 4502:4502 dyalog/dyalog
+ ⍝ (dyalog-ride-session "localhost" 4502)
+
 ⎕ml←3
 ⎕io←0
 
@@ -120,6 +124,8 @@ Ubyte ← {⍵+256×⍵<0}
     ntn←⍵ ⎕NTIE 0 ⋄ z←⎕NREAD ntn,83 ¯1 ⋄ ntn←⎕NUNTIE ntn ⋄ z
 }
 ∇
+
+ti1 ← GetFileInt8 '/Users/hohn/tmp/apl/cnn-in-apl/input/train-images-idx3-ubyte'
 
 GetInt←{f←Ubyte ⍵ ⋄ 256⊥⍤1⊢(((⍴f)÷4),4)⍴f}
 
