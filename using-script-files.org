@@ -1,0 +1,33 @@
+* Using Script Files
+** Loading a Script into the Session
+
+To demonstrate how SALT can use this Script, let us work in a clear workspace.
+
+:       )clear
+clear ws
+
+Then we can load the contents of our file, using the Load function of SALT, like
+this:
+
+:       Path←'d:\MyFiles\'
+:       ⎕←⎕SE.SALT.Load Path,'DemoScript'
+#.Simple
+
+
+
+The function returns, as a Shy result, the name of the Namespace just created
+(Simple).
+
+:       Simple.⎕nl ¯2
+Airports Nested RounDefault
+
+:       Simple.⎕nl ¯3
+CloseRound Plus Primes Round
+
+:       17 Simple.Plus 23
+40
+
+:       ⎕PATH←'Simple'
+1 Round 75.218 34.963 55.467
+75.2 35 55.5
+
