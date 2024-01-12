@@ -1,12 +1,47 @@
 * Using Script Files
 ** misc
-    - ]load 
+    - Load
+      :     ]load 
       #+BEGIN_SRC dyalog
-        ]load filename
-        ⎕SE.SALT.Load 'filename'      
+         ]load filename
+         ⍝ or
+         ⎕SE.SALT.Load '/Users/hohn/tmp/apl/cnn-in-apl/cnn.dyalog'
+
+         cnn
+         ⍝ #.cnn
+         cnn.main
+         ⍝ #.cnn . ∇main 
+      #+END_SRC
+
+    - Run functions in workspace.  Use Ctrl-Enter to single-step.
+      #+BEGIN_SRC dyalog
+         ⎕SE.SALT.Load '/Users/hohn/tmp/apl/cnn-in-apl/cnn.dyalog'
+         cnn.main 0
       #+END_SRC
       
-    - ]save
+    - You can query the current directory setting using the following command:
+      :     ⎕SE.SALT.Settings 'workdir'
+
+    - set it
+      :     ⎕SE.SALT.Settings 'workdir /Users/hohn/tmp/apl/cnn-in-apl'
+
+
+    - Save
+      :     ]save
+      :     {R}←{X}⎕SAVE Y
+      If X is 0, the workspace is saved without any state indicator in effect. The
+      effect is the same as if you first executed =)RESET= and then =)SAVE=. In
+      this case, when the workspace is subsequently loaded, the value of the
+      latent expression (=⎕LX=) is honoured if applicable.
+
+    - Workspace available is identified by the system constant
+      :     ⎕WA
+
+    - Settings
+      #+BEGIN_SRC dyalog
+        ⎕IO ← 0
+        ]box on
+      #+END_SRC
 
     - Version 15.0 added support to the interpreter:
       #+BEGIN_SRC dyalog
@@ -27,8 +62,6 @@
       etc. You can of course put this in a shell script for ease of
       use.
 
-    
-
 ** Data import / export
    https://help.dyalog.com/latest/index.htm#Language/System%20Functions/csv.htm?Highlight=csv   
    - Monadic ⎕CSV imports data from a CSV file or converts data from CSV format to
@@ -38,10 +71,11 @@
      to a CSV format.
 
 ** The script
-   #+BEGIN_SRC text
+   #+BEGIN_SRC dyalog
      :Namespace Simple
 
      Nested←'My name is Bond' 0 0 7
+     ...
    #+END_SRC
 
 ** Loading a Script into the Session
@@ -76,3 +110,6 @@ CloseRound Plus Primes Round
 1 Round 75.218 34.963 55.467
 75.2 35 55.5
 
+
+** Direct script execution
+   : dyalogscript args.apls   

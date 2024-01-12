@@ -122,44 +122,44 @@
  ⍝ Some IO functions
  Ubyte ← {⍵+256×⍵<0}
 
- ∇ GetFileInt8←{
+  GetFileInt8←{
          ⎕←'Reading file: ', ⍵ ,' as int8'
          ntn←⍵ ⎕NTIE 0 ⋄ z←⎕NREAD ntn,83 ¯1 ⋄ ntn←⎕NUNTIE ntn ⋄ z
  }
- ∇
+ 
 
  ti1 ← GetFileInt8 '/Users/hohn/tmp/apl/cnn-in-apl/input/train-images-idx3-ubyte'
 
  GetInt←{f←Ubyte ⍵ ⋄ 256⊥⍤1⊢(((⍴f)÷4),4)⍴f}
 
- ∇ ReadImages←{
+  ReadImages←{
          t←GetFileInt8 ⍵
          z←(GetInt 12↑4↓t)⍴16↓t
          ⎕←'Read ',(⍕⍴z),'images from ',⍵
          z
  }
- ∇
+ 
 
- ∇ ReadLabels←{
+  ReadLabels←{
          z←8↓GetFileInt8 ⍵
          ⎕←'Read ',(⍕⍴z),' labels from ',⍵
          z
  }
- ∇
+ 
 
 
  ⍝ backmulticonv is just a ranked application of backin, backw and backbias.
- ∇ backmulticonv ← {
+  backmulticonv ← {
          (d_out weights in bias) ← ⍵
          d_in ← +⌿d_out {backin ⍺ ⍵ in} ⍤((⍴⍴in), (⍴⍴in)) ⊢ weights
          d_w ← {⍵ conv in} ⍤(⍴⍴in) ⊢ d_out
          d_bias ← backbias ⍤(⍴⍴in) ⊢ d_out
          d_in d_w d_bias
  }
- ∇
+ 
 
 
- ∇ trainzhang ← {
+  trainzhang ← {
          (img target k1 b1 k2 b2 fc b) ← ⍵
          c1 ← logistic multiconv img k1 b1
          s1 ← avgpool c1
@@ -177,9 +177,9 @@
          (_ d_k1 d_b1) ← backmulticonv (d_c1 backlogistic c1) k1 img b1
          (d_k1 d_b1 d_k2 d_b2 d_fc d_b err)
  }
- ∇
+ 
 
- ∇ testzhang ← {
+  testzhang ← {
          (k1 b1 k2 b2 fc b) ← ⍵
          c1 ← logistic multiconv ⍺ k1 b1
          s1 ← avgpool c1
@@ -188,10 +188,10 @@
          out ← logistic multiconv s2 fc b
          (maxpos out)
  }
- ∇
+ 
 
 
- ∇ train ← {
+  train ← {
          (e i k1 b1 k2 b2 fc b rate imgs labs trsz) ← ⍵
 
          (i ≥ trsz) : (e÷trsz) k1 b1 k2 b2 fc b
@@ -208,10 +208,10 @@
          error←+/err
          ∇ ((e+error) (i+1)  k1 b1 k2 b2 fc b rate imgs labs trsz)
  }
- ∇
+ 
 
 
- ∇ main ← {
+  main ← {
          epochs    ← 10
          batchsize ← 1
          trainings ← 1000
@@ -223,10 +223,11 @@
          b2        ← 12⍴÷12
          fc        ← 10 12 1 4 4⍴÷192
          b         ← 10⍴÷10
-         trimgs    ← ReadImages 'input/train-images-idx3-ubyte'
-         teimgs    ← ReadImages 'input/t10k-images-idx3-ubyte'
-         trlabs    ← ReadLabels 'input/train-labels-idx1-ubyte'
-         telabs    ← ReadLabels 'input/t10k-labels-idx1-ubyte'
+         prefix    ← '/Users/hohn/tmp/apl/cnn-in-apl/input'
+         trimgs    ← ReadImages prefix,'/train-images-idx3-ubyte'
+         teimgs    ← ReadImages prefix,'/t10k-images-idx3-ubyte'
+         trlabs    ← ReadLabels prefix,'/train-labels-idx1-ubyte'
+         telabs    ← ReadLabels prefix,'/t10k-labels-idx1-ubyte'
 
          ⎕←'Running Zhang with ',(⍕epochs),' epochs, batchsize ',(⍕batchsize)
          ⎕←(⍕trainings),' training images, ',(⍕tests),' tests',' and a rate of ',⍕rate
@@ -243,8 +244,8 @@
          ⎕←'The time taken for recognition is ',(⍕⎕AI-t)
          ⎕←(⍕correct),' images out of ',(⍕tests),' recognised correctly'
  }
- ∇
+ 
 
- main 0
+ ⍝ main 0
 
 :EndNamespace 
