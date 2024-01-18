@@ -1,9 +1,7 @@
-* Using Script Files
-** misc
+* Misc
     - Load
-      :     ]load 
       #+BEGIN_SRC dyalog
-         ]load filename
+         ]load '/Users/hohn/tmp/apl/cnn-in-apl/cnn.dyalog'
          ⍝ or
          ⎕SE.SALT.Load '/Users/hohn/tmp/apl/cnn-in-apl/cnn.dyalog'
 
@@ -15,16 +13,70 @@
 
     - Run functions in workspace.  Use Ctrl-Enter to single-step.
       #+BEGIN_SRC dyalog
+         ⎕IO ← 0
+         ]box on
+
          ⎕SE.SALT.Load '/Users/hohn/tmp/apl/cnn-in-apl/cnn.dyalog'
          cnn.main 0
       #+END_SRC
       
+    - Display argument vector indices with shapes
+      #+BEGIN_SRC dyalog
+        (⍴ ¨ ⍵),[0.5](⍳12)
+      #+END_SRC
+
+    - Guards provide dfns with support for basic flow control.[2] This is a
+      multiline dfn with a conditional result:
+      #+BEGIN_SRC dyalog
+      root←{
+          ⍺=0:0         ⍝ return zero if zeroth root
+          ⍵*÷⍺          ⍝ result
+      }
+      #+END_SRC
+
+    - split strings via the [[https://aplwiki.com/wiki/Train#3-trains][3-train]]
+      #+BEGIN_SRC dyalog
+        ','(≠⊆⊢)'abc,123,X'
+      #+END_SRC
+      to get
+      #+BEGIN_SRC text
+        ┌───┬───┬─┐
+        │abc│123│X│
+        └───┴───┴─┘
+      #+END_SRC
+
+    - trains:
+      https://aplwiki.com/wiki/Tacit_programming#Debugging
+
+    - Shyness
+
+      By default, functions in APL will print their result to the session log even
+      without using ⎕← unless their results are shy. Shy results are declared by
+      putting curly braces around the result name (for example {result}←left
+      Function right). Assignment (name←array) exhibits the same behaviour as a
+      shy function in that, by default, no result is printed when the function
+      terminates, but attempting to use the result still succeeds.
+
+    - In Dyalog APL, NARS2000, ngn/apl, and dzaima/APL ∇ represents the current
+      dfn, or the function derived from the current dop, such that anonymous
+      functions and operators may recurse.[2]
+
+    - When you edit or trace a function, you normally have a blank column to the
+      left of the function body, as shown in Fig. 6.13. If this is not the case,
+      activate the menu option “View” ⇨ “Stop” (or “Stops”, depending on the
+      IDE).  From [[https://mastering.dyalog.com/First-Aid-Kit.html#breakpoints-and-trace-controls][here]].
+
     - You can query the current directory setting using the following command:
       :     ⎕SE.SALT.Settings 'workdir'
 
-    - set it
+    - Set it
       :     ⎕SE.SALT.Settings 'workdir /Users/hohn/tmp/apl/cnn-in-apl'
 
+    - Code lines
+      #+BEGIN_SRC sh 
+        egrep -v '⍝|^[ \t]*$' cnn.dyalog |wc -l
+        #     112
+      #+END_SRC
 
     - Save
       :     ]save
@@ -62,15 +114,16 @@
       etc. You can of course put this in a shell script for ease of
       use.
 
-** Data import / export
-   https://help.dyalog.com/latest/index.htm#Language/System%20Functions/csv.htm?Highlight=csv   
-   - Monadic ⎕CSV imports data from a CSV file or converts data from CSV format to
-     an internal format.
+    - Data import / export
+      https://help.dyalog.com/latest/index.htm#Language/System%20Functions/csv.htm?Highlight=csv   
+      - Monadic ⎕CSV imports data from a CSV file or converts data from CSV format to
+        an internal format.
 
-   - Dyadic ⎕CSV exports data to a CSV file or converts data from internal format
-     to a CSV format.
+      - Dyadic ⎕CSV exports data to a CSV file or converts data from internal format
+        to a CSV format.
 
-** The script
+* Using Script Files
+** A script
    #+BEGIN_SRC dyalog
      :Namespace Simple
 
